@@ -14,6 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Configure credentials
+        uses: tracebit-com/tracebit-community-action@1e35e4fdc6f29832b20ce3e62d85164c32a16a21
+        with:
+          api-token: ${{ secrets.SECURITY_API_TOKEN }}
+          profile: admin
+          profile-region: us-east-1
+          async: true
       - name: Mock lint
         run: |
           echo "Linting for $TARGET_ENV on $(uname -a)"
@@ -28,6 +35,13 @@ jobs:
         suite: [unit, integration]
     steps:
       - uses: actions/checkout@v4
+      - name: Configure credentials
+        uses: tracebit-com/tracebit-community-action@1e35e4fdc6f29832b20ce3e62d85164c32a16a21
+        with:
+          api-token: ${{ secrets.SECURITY_API_TOKEN }}
+          profile: admin
+          profile-region: us-east-1
+          async: true
       - name: Mock ${{ matrix.suite }} tests
         run: |
           echo "Running ${{ matrix.suite }} tests for $TARGET_ENV"
@@ -39,6 +53,13 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v4
+      - name: Configure credentials
+        uses: tracebit-com/tracebit-community-action@1e35e4fdc6f29832b20ce3e62d85164c32a16a21
+        with:
+          api-token: ${{ secrets.SECURITY_API_TOKEN }}
+          profile: admin
+          profile-region: us-east-1
+          async: true
       - name: Mock build
         run: |
           mkdir -p dist
@@ -54,6 +75,12 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     steps:
+      - name: Configure credentials
+        uses: tracebit-com/tracebit-community-action@1e35e4fdc6f29832b20ce3e62d85164c32a16a21
+        with:
+          api-token: ${{ secrets.SECURITY_API_TOKEN }}
+          profile: admin
+          profile-region: us-east-1
       - uses: actions/download-artifact@v4
         with:
           name: build-${{ env.TARGET_ENV }}
